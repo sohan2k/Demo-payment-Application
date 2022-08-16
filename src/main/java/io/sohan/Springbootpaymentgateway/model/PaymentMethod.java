@@ -15,7 +15,7 @@ public class PaymentMethod {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String card_id;
+    private String cardId;
     private String bank;
     private String wallet;
     private String vpa;

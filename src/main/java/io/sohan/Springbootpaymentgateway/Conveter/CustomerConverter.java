@@ -26,4 +26,8 @@ public class CustomerConverter {
     public CustomerResponseDto customersToCustomerResponseDto(Customers customers) {
         return modelMapper.map(customers, CustomerResponseDto.class);
     }
+
+    public Customers CustomerResponseDtoToCustomers(CustomerResponseDto customerResponseDto) {
+        return modelMapper.map(customerResponseDto, Customers.class);
+    }
 }

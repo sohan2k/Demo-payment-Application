@@ -52,11 +52,12 @@ public class CustomerServicesImpl implements CustomerServices {
     @Override
     public Customers getByContact(String contact) {
         Optional<Customers> optionalCustomers = customerRepository.findByContact(contact);
+        System.out.println();
         if (!optionalCustomers.isPresent()) {
             throw new RuntimeException("No data available!!");
         }
+        System.out.println(optionalCustomers.get());
         return optionalCustomers.get();
-
     }
 
     @Override

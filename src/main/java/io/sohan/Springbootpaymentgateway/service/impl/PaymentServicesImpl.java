@@ -4,18 +4,23 @@ import com.google.gson.Gson;
 import com.razorpay.Payment;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
+import io.sohan.Springbootpaymentgateway.Conveter.CustomerConverter;
 import io.sohan.Springbootpaymentgateway.Conveter.PaymentConverter;
 import io.sohan.Springbootpaymentgateway.dto.request.OrderCheckDto;
 import io.sohan.Springbootpaymentgateway.dto.response.PaymentDto;
+import io.sohan.Springbootpaymentgateway.model.Customers;
 import io.sohan.Springbootpaymentgateway.model.Orders;
+import io.sohan.Springbootpaymentgateway.model.PaymentMethod;
 import io.sohan.Springbootpaymentgateway.model.Payments;
 import io.sohan.Springbootpaymentgateway.repository.OrderRepository;
 import io.sohan.Springbootpaymentgateway.repository.PaymentRepository;
+import io.sohan.Springbootpaymentgateway.service.CustomerServices;
 import io.sohan.Springbootpaymentgateway.service.PaymentServices;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -25,16 +30,22 @@ public class PaymentServicesImpl implements PaymentServices {
     private final PaymentRepository paymentRepository;
     private final PaymentConverter paymentConverter;
     private OrderRepository orderRepository;
+
+    private CustomerServices customerServices;
+    private CustomerConverter customerConverter;
+    private PaymentMethodServiceImpl paymentMethodService;
     @Value("${Razorpay.keyId}")
     private String key_id;
     @Value("${Razorpay.Secret-key}")
     private String key_secret;
 
-    public PaymentServicesImpl(PaymentRepository paymentRepository, PaymentConverter paymentConverter, OrderRepository orderRepository) {
+    public PaymentServicesImpl(PaymentRepository paymentRepository, PaymentConverter paymentConverter, OrderRepository orderRepository, CustomerServices customerServices, CustomerConverter customerConverter, PaymentMethodServiceImpl paymentMethodService) {
         this.paymentRepository = paymentRepository;
         this.paymentConverter = paymentConverter;
-
         this.orderRepository = orderRepository;
+        this.customerServices = customerServices;
+        this.customerConverter = customerConverter;
+        this.paymentMethodService = paymentMethodService;
     }
 
     @Override
@@ -65,6 +76,9 @@ public class PaymentServicesImpl implements PaymentServices {
         System.out.println(payments);
         payments.setOrders(orderRepository.getReferenceById(oId));
         paymentRepository.save(payments);
+        if (!Objects.equals(payments.getVpa(), "success@razorpay")) {
+            addTansactionDetails(orderRepository.getReferenceById(oId).getCustomers().getId(), payments);
+        }
         return payments;
     }
 
@@ -119,5 +133,17 @@ public class PaymentServicesImpl implements PaymentServices {
         Payments payments = gson.fromJson(payment.toString(), Payments.class);
         payments = paymentRepository.save(payments);
         return payments;
+    }
+
+    private void addTansactionDetails(Long id, Payments payments) {
+        Customers customers = customerConverter.CustomerResponseDtoToCustomers(customerServices.getById(id));
+//        Customers customers = customerServices.getByContact(phNo);
+        PaymentMethod paymentMethod = new PaymentMethod();
+        paymentMethod.setMethod(payments.getMethod());
+        paymentMethod.setBank(payments.getBank());
+        paymentMethod.setCardId(payments.getCard_id());
+        paymentMethod.setVpa(payments.getVpa());
+        paymentMethod.setWallet(payments.getWallet());
+        paymentMethodService.addPaymentMethod(paymentMethod, customers);
     }
 }
