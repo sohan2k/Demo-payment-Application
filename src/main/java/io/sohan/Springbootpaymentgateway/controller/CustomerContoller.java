@@ -33,6 +33,20 @@ public class CustomerContoller {
         return gson.toJson(customerRequestDto);
     }
 
+    @PostMapping("/update/{id}")
+    @ResponseBody
+    public String updateCustomerById(@PathVariable Long id, @RequestBody CustomerRequestDto customerRequestDto) {
+        System.out.println(customerRequestDto);
+        customerServices.update(id, customerRequestDto);
+        return gson.toJson(customerRequestDto);
+    }
+
+    @RequestMapping(value = "update/{id}/show")
+    public String update(@PathVariable Long id, Model model) {
+        model.addAttribute("customers", customerServices.getById(id));
+        return "customer/customerUpdate";
+    }
+
     @RequestMapping(value = "/show")
     public String getAllCustomers(Model model) {
         model.addAttribute("customers", customerServices.getAll());

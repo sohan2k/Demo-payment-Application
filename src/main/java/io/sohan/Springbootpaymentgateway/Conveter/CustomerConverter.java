@@ -30,4 +30,9 @@ public class CustomerConverter {
     public Customers CustomerResponseDtoToCustomers(CustomerResponseDto customerResponseDto) {
         return modelMapper.map(customerResponseDto, Customers.class);
     }
+
+    public Customers toUpdateCustomers(CustomerRequestDto customerRequestDto, Customers customers) {
+        modelMapper.map(customerRequestDto, customers);
+        return customers;
+    }
 }

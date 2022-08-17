@@ -2,15 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sohan/Customer</title>
+    <title>Sohan/Customer/Update</title>
     <!-- added for razorpay -->
     <meta content="width=device-width" name="viewport">
     <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
     <link href="/css/empForm.css" rel="stylesheet" th:href="@{/css/empForm.css}">
-    <link href="/css/show.css" rel="stylesheet" th:href="@{/css/show.css}">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 </head>
 <body>
@@ -192,155 +189,40 @@
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Customer list</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Customer Payment list</h1>
                 </div>
             </div>
             <!-- Checkout Content -->
         </div><!-- End of main container -->
-        <div class="container-xl">
-            <div class="table-responsive">
-                <div class="table-wrapper">
-                    <div class="table-title">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <a class="btn btn-success" data-toggle="tooltip" href="#" role="button"
-                                   th:href="@{'/customer'}" type="button"><i class="material-icons">&#xE147;</i>
-                                    <span
-                                            th:href="@{'/customer'}">Add New Customer</span></a>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="search-box">
-                                    <i class="material-icons">&#xE8B6;</i>
-                                    <input class="form-control" placeholder="Search&hellip;" type="text">
-                                </div>
+        <div class="container body" id="check_form">
+            <div class="alert alert-success" id="pay-success" style="display:none;">
+                <strong>Payment Completed Successfully</strong>
+            </div>
+            <div class="card-body" id="emp_form">
 
-                            </div>
-                        </div>
+                <form id="msform">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input class="form-control" id="name" name="name" placeholder="Enter Your Name"
+                               required="required"
+                               th:field="*{customers.name}"
+                               type="text">
                     </div>
-                    <table class="table table-striped table-hover table-bordered">
-                        <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th> Name <i class="fa fa-sort"></i></th>
-                            <th>Email</th>
-                            <th>Contact<i class="fa fa-sort"></i></th>
-                            <th>Orders <i class="fa fa-sort"></i></th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:remove="all">
-                            <td>1</td>
-                            <td>Thomas Hardy</td>
-                            <td>S@gamail.com</td>
-                            <td>9999999999</td>
-                            <td>
-                                <a class="view_column" data-toggle="tooltip" href="#" title="View"><i
-                                        class="material-icons">&#xE417;</i></a>
-                            </td>
-                            <td>
-                                <a class="view" data-toggle="tooltip" href="#" title="View"><i
-                                        class="material-icons">&#xE417;</i></a>
-                                <a class="edit" data-toggle="tooltip" href="#" title="Edit"><i
-                                        class="material-icons">&#xE254;</i></a>
-                                <a class="delete" data-toggle="tooltip" href="#" title="Delete"><i
-                                        class="material-icons">&#xE872;</i></a>
-                            </td>
-                        </tr>
-                        <tr th:remove="all">
-                            <td>1</td>
-                            <td>Thomas Hardy</td>
-                            <td>S@gamail.com</td>
-                            <td>9999999999</td>
-                            <td>
-                                <a class="view_column" data-toggle="tooltip" href="#" title="View"><i
-                                        class="material-icons">&#xE417;</i></a>
-                            </td>
-                            <td>
-                                <a class="view" data-toggle="tooltip" href="#" title="View"><i
-                                        class="material-icons">&#xE417;</i></a>
-                                <a class="edit" data-toggle="tooltip" href="#" title="Edit"><i
-                                        class="material-icons">&#xE254;</i></a>
-                                <a class="delete" data-toggle="tooltip" href="#" title="Delete"><i
-                                        class="material-icons">&#xE872;</i></a>
-                            </td>
-                        </tr>
-                        <tr th:remove="all">
-                            <td>1</td>
-                            <td>Thomas Hardy</td>
-                            <td>S@gamail.com</td>
-                            <td>9999999999</td>
-                            <td>
-                                <a class="view_column" data-toggle="tooltip" href="#" title="View"><i
-                                        class="material-icons">&#xE417;</i></a>
-                            </td>
-                            <td>
-                                <a class="view" data-toggle="tooltip" href="#" title="View"><i
-                                        class="material-icons">&#xE417;</i></a>
-                                <a class="edit" data-toggle="tooltip" href="#" title="Edit"><i
-                                        class="material-icons">&#xE254;</i></a>
-                                <a class="delete" data-toggle="tooltip" href="#" title="Delete"><i
-                                        class="material-icons">&#xE872;</i></a>
-                            </td>
-                        </tr>
-                        <tr th:each="customer : ${customers}">
-
-                            <td th:text="${customer.id}">123</td>
-                            <td th:text="${customer.name}">asdf</td>
-                            <td th:text="${customer.email}">random</td>
-                            <td th:text="${customer.contact}">0123</td>
-                            <td>
-                                <a class="view" data-toggle="tooltip" href="#"
-                                   th:href="@{'/orders/'+${customer.id}+'/show'}"
-                                   title="Orders"><i class="material-icons blue600">shopping_basket</i></a>
-                            </td>
-
-                            <!-- <td th:if="${null == branch.managers.id} ?: 'Not Defined' >Not Assignned</td>
-                            <td" th:unless="${null ne branch.managers.id}" : th:text="${branch.managers.name}">asdf</td>-->
-                            <!--                    <td class="text-bold text-red " th:if="${branch.managers} == null" th:utext="'Not Assigned'">Not-->
-                            <!--                        Assignned-->
-                            <!--                    </td>-->
-                            <!--                    <td class="text-bold " th:if="${branch.managers} != null"-->
-                            <!--                        th:style="${branch.managers != null ? 'color: green;' : _}" th:utext="${branch.managers.name}">-->
-                            <!--                        Assigned-->
-                            <!--                    </td>-->
-                            <!--<td th:text="${branch.managers.name}">random</td>-->
-
-                            <!--<td th:text="${branch.managers.getName()}">asdf</td>-->
-
-                            <td>
-                                <a class="manager" data-toggle="tooltip" href="#"
-                                   th:href="@{'/customers/'+${customer.id}+'/show'}"
-                                   title="Pay"><i class="material-icons">add_shopping_cart</i></a>
-                                <a class="edit" data-toggle="tooltip" href="#"
-                                   th:href="@{'/customers/update/'+${customer.id}+'/show'}"
-                                   title="Edit"><i class="material-icons">&#xE254;</i></a>
-                                <a class="delete" data-toggle="tooltip" href="#" onclick="dlt()"
-                                   title="Delete"><i class="material-icons">&#xE872;</i></a>
-                            </td>
-                        </tr>
-                        <script>
-                            function dlt() {
-                                confirm("are you want to delete this?");
-                            }
-                        </script>
-
-                        </tbody>
-                    </table>
-                    <div class="clearfix">
-                        <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                        <ul class="pagination">
-                            <li class="page-item disabled"><a href="#"><i class="fa fa-angle-double-left"></i></a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">4</a></li>
-                            <li class="page-item"><a class="page-link" href="#">5</a></li>
-                            <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-double-right"></i></a>
-                            </li>
-                        </ul>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input class="form-control" id="email" name="email" placeholder="Enter Your Email"
+                               required="required"
+                               th:field="*{customers.email}"
+                               type="email">
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="contact">Contact</label>
+                        <input class="form-control" id="contact" name="contact" placeholder="Enter Your Contact"
+                               required="required" th:field="*{customers.contact}" type="number">
+                    </div>
+                    <input class="form-control" id="oid" required th:field="*{customers.id}" type="hidden">
+                    <button class="btn btn-primary" id="submit-form" type="button">Submit</button>
+                </form>
             </div>
         </div>
     </div><!-- End of container wrapper-->
@@ -349,6 +231,74 @@
 <script crossorigin="anonymous"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
         src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- razorpay -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    function doPost(path, reqObj, isAsync) {
+        console.log("payment started...");
+        let resp;
+        // let amount=document.getElementById("pay_amount").value;
+        $.ajax({
+            url: path,
+            type: 'POST',
+            data: JSON.stringify(reqObj),
+            contentType: "application/json; charset=UTF-8",
+            async: isAsync,
+            success: function (data) {
+                resp = JSON.parse(data)
+            }
+        });
+        return resp;
+    }
+</script>
+<script>
+    function docheck(path, reqObj, isAsync) {
+        console.log("Check started...");
+        let resp;
+        // let amount=document.getElementById("pay_amount").value;
+        $.ajax({
+            url: path,
+            type: 'POST',
+            data: JSON.stringify(reqObj),
+            contentType: "application/json; charset=UTF-8",
+            async: isAsync,
+            success: function (data) {
+                resp = JSON.parse(data);
+                alert("success");
+                //console.log(resp);
+            },
+            error: function (data) {
+                resp = JSON.parse(data);
+                alert("error");
+                //console.log(resp);
+            }
+        });
+        return resp;
+    }
+</script>
+<script>
+    let resp = null;
+    let o_id = null;
 
+    var options = {
+        "name": "",
+        "email": "",
+        "contact": ""
+    };
+    document.getElementById('submit-form').onclick = function (e) {
+        var reqObj = $('#msform').serializeArray();
+        // let reqObj=$("#amount").val();
+        console.log(reqObj);
+        var indxReqObj = {};
+        $.map(reqObj, function (n, i) {
+            indxReqObj[n['name']] = n['value'];
+        });
+
+        resp = doPost("/customers/update/" + o_id, indxReqObj, false);
+        console.log(resp);
+        alert(" Successfully created")
+
+    }
+</script>
 </body>
 </html>

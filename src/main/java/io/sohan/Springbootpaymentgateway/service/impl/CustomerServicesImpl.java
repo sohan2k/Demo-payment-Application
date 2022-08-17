@@ -83,6 +83,7 @@ public class CustomerServicesImpl implements CustomerServices {
 //        }
 
         Customers customers = customerRepository.getReferenceById(id);
+        customers = customerConverter.toUpdateCustomers(customerRequestDto, customers);
         customers = customerRepository.save(customers);
         return customerConverter.customersToCustomerDto(customers);
     }

@@ -1,6 +1,9 @@
 package io.sohan.Springbootpaymentgateway.service.impl;
 
 import com.google.gson.Gson;
+import com.razorpay.Card;
+import com.razorpay.RazorpayClient;
+import com.razorpay.RazorpayException;
 import io.sohan.Springbootpaymentgateway.model.Customers;
 import io.sohan.Springbootpaymentgateway.model.PaymentMethod;
 import io.sohan.Springbootpaymentgateway.repository.PaymentMethodRepository;
@@ -55,7 +58,7 @@ public class PaymentMethodServiceImpl {
 
     }
 
-//    public List<Object> getListCard() throws RazorpayException {
+    //    public List<Object> getListCard() throws RazorpayException {
 //        RazorpayClient razorpay = new RazorpayClient(key_id, key_secret);
 //
 //        JSONObject params = new JSONObject();
@@ -72,17 +75,17 @@ public class PaymentMethodServiceImpl {
 //        return paymentList;
 //    }
 //
-//    public Object getCard(String id) throws RazorpayException {
-//        RazorpayClient razorpay = new RazorpayClient(key_id, key_secret);
-//
-////        String paymentId = "pay_DtFYPi3IfUTgsL";
-//
-//        Card card = razorpay.Cards.fetch();
-//        System.out.println(card);
-//        Object o = card.toString();
-//        System.out.println(o);
-//        return o;
-//    }
+    public Object getCard(String id) throws RazorpayException {
+        RazorpayClient razorpay = new RazorpayClient(key_id, key_secret);
+
+//        String paymentId = "pay_DtFYPi3IfUTgsL";
+
+        Card card = razorpay.Cards.fetch(id);
+        System.out.println(card);
+        Object o = card.toString();
+        System.out.println(o);
+        return o;
+    }
 
 
 }

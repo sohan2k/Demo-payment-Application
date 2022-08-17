@@ -1,11 +1,14 @@
 package io.sohan.Springbootpaymentgateway.controller;
 
 import com.google.gson.Gson;
+import com.razorpay.RazorpayException;
 import io.sohan.Springbootpaymentgateway.dto.response.CustomerResponseDto;
 import io.sohan.Springbootpaymentgateway.dto.response.OrderResponseDto;
+import io.sohan.Springbootpaymentgateway.dto.response.PaymentDto;
 import io.sohan.Springbootpaymentgateway.model.Customers;
 import io.sohan.Springbootpaymentgateway.service.CustomerServices;
 import io.sohan.Springbootpaymentgateway.service.OrderServices;
+import io.sohan.Springbootpaymentgateway.service.PaymentServices;
 import io.sohan.Springbootpaymentgateway.service.impl.PaymentMethodServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +24,7 @@ public class RestApiContoller {
     private OrderServices orderServices;
     private CustomerServices customerServices;
     private PaymentMethodServiceImpl paymentMethodService;
+    private PaymentServices paymentServices;
 
     public RestApiContoller(OrderServices orderServices, CustomerServices customerServices, PaymentMethodServiceImpl paymentMethodService) {
         this.orderServices = orderServices;
@@ -43,17 +47,23 @@ public class RestApiContoller {
         return customerServices.getByContact(phNo);
     }
 
-//    @GetMapping
+    @GetMapping("payments/{payId}")
+    private PaymentDto getPaymentById(@PathVariable String payId) throws RazorpayException {
+        System.out.println(payId);
+        return paymentServices.getById(payId);
+    }
+
+    //    @GetMapping
 //    public List<Object> getListCard() throws RazorpayException {
 //
 //        return paymentMethodService.getListCard();
 //
 //    }
 //
-//    @GetMapping("card/{id}")
-//    public Object getCard(@PathVariable String id) throws RazorpayException {
-//
-//        return paymentMethodService.getCard(id);
-//
-//    }
+    @GetMapping("card/{id}")
+    public Object getCard(@PathVariable String id) throws RazorpayException {
+
+        return paymentMethodService.getCard(id);
+
+    }
 }
