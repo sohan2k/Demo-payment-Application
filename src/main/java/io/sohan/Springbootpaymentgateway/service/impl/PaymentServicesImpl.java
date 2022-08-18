@@ -34,18 +34,20 @@ public class PaymentServicesImpl implements PaymentServices {
     private CustomerServices customerServices;
     private CustomerConverter customerConverter;
     private PaymentMethodServiceImpl paymentMethodService;
+    private CardServiceImpl cardService;
     @Value("${Razorpay.keyId}")
     private String key_id;
     @Value("${Razorpay.Secret-key}")
     private String key_secret;
 
-    public PaymentServicesImpl(PaymentRepository paymentRepository, PaymentConverter paymentConverter, OrderRepository orderRepository, CustomerServices customerServices, CustomerConverter customerConverter, PaymentMethodServiceImpl paymentMethodService) {
+    public PaymentServicesImpl(PaymentRepository paymentRepository, PaymentConverter paymentConverter, OrderRepository orderRepository, CustomerServices customerServices, CustomerConverter customerConverter, PaymentMethodServiceImpl paymentMethodService, CardServiceImpl cardService) {
         this.paymentRepository = paymentRepository;
         this.paymentConverter = paymentConverter;
         this.orderRepository = orderRepository;
         this.customerServices = customerServices;
         this.customerConverter = customerConverter;
         this.paymentMethodService = paymentMethodService;
+        this.cardService = cardService;
     }
 
     @Override
@@ -82,31 +84,6 @@ public class PaymentServicesImpl implements PaymentServices {
         return payments;
     }
 
-//    @Override
-//    public PaymentDto add(OrderCheckDto orderCheckDto, Orders orders) throws RazorpayException {
-//        RazorpayClient razorpayClient = new RazorpayClient(key_id, key_secret);
-//        Payment payment = razorpayClient.Payments.fetch(orderCheckDto.getRazorpay_payment_id());
-//        Payments payments = savePayment(payment);
-//        payments.setOrders(orders);
-//        payments = paymentRepository.save(payments);
-//        return paymentConverter.paymentsToPaymentDto(payments);
-//    }
-
-//    @Override
-//    public PaymentDto add(OrderCheckDto orderCheckDto) throws RazorpayException {
-//        RazorpayClient razorpayClient = new RazorpayClient(key_id, key_secret);
-//        Payment payment = razorpayClient.Payments.fetch(orderCheckDto.getRazorpay_payment_id());
-//        Payments payments = savePayment(payment);
-//        System.out.println(payments);
-//        if (payment.get("status").equals("captured")) {
-//            System.out.println("in If ");
-//            Orders orders = orderServices.update(orderCheckDto);
-//            payments.setOrders(orders);
-//            System.out.println(payments);
-//        }
-//        payments = paymentRepository.save(payments);
-//        return paymentConverter.paymentsToPaymentDto(payments);
-//    }
 
     @Override
     public PaymentDto update(String paymentId) throws RazorpayException {
@@ -135,7 +112,7 @@ public class PaymentServicesImpl implements PaymentServices {
         return payments;
     }
 
-    private void addTansactionDetails(Long id, Payments payments) {
+    private void addTansactionDetails(Long id, Payments payments) throws RazorpayException {
         Customers customers = customerConverter.CustomerResponseDtoToCustomers(customerServices.getById(id));
 //        Customers customers = customerServices.getByContact(phNo);
         PaymentMethod paymentMethod = new PaymentMethod();
@@ -144,6 +121,8 @@ public class PaymentServicesImpl implements PaymentServices {
         paymentMethod.setCardId(payments.getCard_id());
         paymentMethod.setVpa(payments.getVpa());
         paymentMethod.setWallet(payments.getWallet());
+        cardService.addCard(payments.getCard_id(), customers);
         paymentMethodService.addPaymentMethod(paymentMethod, customers);
+
     }
 }

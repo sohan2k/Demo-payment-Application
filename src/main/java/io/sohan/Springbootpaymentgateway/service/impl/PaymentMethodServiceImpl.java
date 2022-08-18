@@ -1,11 +1,10 @@
 package io.sohan.Springbootpaymentgateway.service.impl;
 
 import com.google.gson.Gson;
-import com.razorpay.Card;
-import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
 import io.sohan.Springbootpaymentgateway.model.Customers;
 import io.sohan.Springbootpaymentgateway.model.PaymentMethod;
+import io.sohan.Springbootpaymentgateway.repository.CardRepository;
 import io.sohan.Springbootpaymentgateway.repository.PaymentMethodRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,13 +15,16 @@ import java.util.Optional;
 public class PaymentMethodServiceImpl {
     private final Gson gson = new Gson();
     private PaymentMethodRepository paymentMethodRepository;
+
+    private CardRepository cardRepository;
     @Value("${Razorpay.keyId}")
     private String key_id;
     @Value("${Razorpay.Secret-key}")
     private String key_secret;
 
-    public PaymentMethodServiceImpl(PaymentMethodRepository paymentMethodRepository) {
+    public PaymentMethodServiceImpl(PaymentMethodRepository paymentMethodRepository, CardRepository cardRepository) {
         this.paymentMethodRepository = paymentMethodRepository;
+        this.cardRepository = cardRepository;
     }
 
     public Boolean getByVpa(String vpa, Long custId) {
@@ -41,19 +43,21 @@ public class PaymentMethodServiceImpl {
         return false;
     }
 
-    public void addPaymentMethod(PaymentMethod paymentMethod, Customers customers) {
-
-        if (paymentMethod.getCardId() != null || paymentMethod.getVpa() != null) {
+    public void addPaymentMethod(PaymentMethod paymentMethod, Customers customers) throws RazorpayException {
+        if (paymentMethod.getCardId() != null) {
+            if (!getByCard(paymentMethod.getCardId(), customers.getId())) {
+                paymentMethod.setCustomers(customers);
+                paymentMethodRepository.save(paymentMethod);
+                System.out.println("vpa1");
+                System.out.println(paymentMethod);
+            }
+        } else {
             if (!getByVpa(paymentMethod.getVpa(), customers.getId())) {
                 paymentMethod.setCustomers(customers);
                 paymentMethodRepository.save(paymentMethod);
-                System.out.println(paymentMethod);
-            } else if (!getByCard(paymentMethod.getCardId(), customers.getId())) {
-                paymentMethod.setCustomers(customers);
-                paymentMethodRepository.save(paymentMethod);
+                System.out.println("card2");
                 System.out.println(paymentMethod);
             }
-
         }
 
     }
@@ -75,17 +79,6 @@ public class PaymentMethodServiceImpl {
 //        return paymentList;
 //    }
 //
-    public Object getCard(String id) throws RazorpayException {
-        RazorpayClient razorpay = new RazorpayClient(key_id, key_secret);
-
-//        String paymentId = "pay_DtFYPi3IfUTgsL";
-
-        Card card = razorpay.Cards.fetch(id);
-        System.out.println(card);
-        Object o = card.toString();
-        System.out.println(o);
-        return o;
-    }
 
 
 }

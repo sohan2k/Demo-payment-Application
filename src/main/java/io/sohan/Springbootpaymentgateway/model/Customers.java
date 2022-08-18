@@ -30,6 +30,9 @@ public class Customers {
     @OneToMany(mappedBy = "customers")
     private List<PaymentMethod> paymentMethods;
 
+    @OneToMany(mappedBy = "customers")
+    private List<Cards> cards;
+
     /**
      * It represents record created date.
      */

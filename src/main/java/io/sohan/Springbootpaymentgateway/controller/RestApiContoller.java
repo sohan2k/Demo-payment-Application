@@ -9,6 +9,7 @@ import io.sohan.Springbootpaymentgateway.model.Customers;
 import io.sohan.Springbootpaymentgateway.service.CustomerServices;
 import io.sohan.Springbootpaymentgateway.service.OrderServices;
 import io.sohan.Springbootpaymentgateway.service.PaymentServices;
+import io.sohan.Springbootpaymentgateway.service.impl.CardServiceImpl;
 import io.sohan.Springbootpaymentgateway.service.impl.PaymentMethodServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,11 +26,13 @@ public class RestApiContoller {
     private CustomerServices customerServices;
     private PaymentMethodServiceImpl paymentMethodService;
     private PaymentServices paymentServices;
+    private CardServiceImpl cardService;
 
-    public RestApiContoller(OrderServices orderServices, CustomerServices customerServices, PaymentMethodServiceImpl paymentMethodService) {
+    public RestApiContoller(OrderServices orderServices, CustomerServices customerServices, PaymentMethodServiceImpl paymentMethodService, CardServiceImpl cardService) {
         this.orderServices = orderServices;
         this.customerServices = customerServices;
         this.paymentMethodService = paymentMethodService;
+        this.cardService = cardService;
     }
 
     @GetMapping("orders/{id}")
@@ -53,17 +56,9 @@ public class RestApiContoller {
         return paymentServices.getById(payId);
     }
 
-    //    @GetMapping
-//    public List<Object> getListCard() throws RazorpayException {
-//
-//        return paymentMethodService.getListCard();
-//
-//    }
-//
     @GetMapping("card/{id}")
     public Object getCard(@PathVariable String id) throws RazorpayException {
-
-        return paymentMethodService.getCard(id);
+        return cardService.getCard(id);
 
     }
 }
