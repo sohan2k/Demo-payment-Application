@@ -121,7 +121,9 @@ public class PaymentServicesImpl implements PaymentServices {
         paymentMethod.setCardId(payments.getCard_id());
         paymentMethod.setVpa(payments.getVpa());
         paymentMethod.setWallet(payments.getWallet());
-        cardService.addCard(payments.getCard_id(), customers);
+        if (payments.getCard_id() != null) {
+            cardService.addCard(payments.getCard_id(), customers);
+        }
         paymentMethodService.addPaymentMethod(paymentMethod, customers);
 
     }

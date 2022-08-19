@@ -27,9 +27,9 @@ public class PaymentGateway {
 
     @PostMapping(value = "/createPayment")
     @ResponseBody
-    public ResponseEntity<String> checkout(@RequestBody OrderRequestDto amt) {
+    public ResponseEntity<String> checkout(@RequestBody OrderRequestDto orderRequestDto) {
 
-        return new ResponseEntity<>(gson.toJson(orderService.add(amt)), HttpStatus.OK);
+        return new ResponseEntity<>(gson.toJson(orderService.add(orderRequestDto)), HttpStatus.OK);
     }
 
 

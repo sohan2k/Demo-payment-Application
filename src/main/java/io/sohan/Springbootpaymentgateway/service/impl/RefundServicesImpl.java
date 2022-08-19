@@ -47,7 +47,6 @@ public class RefundServicesImpl implements RefundServices {
     @Override
     public RefundDto add(RefundRequestDto refundRequestDto) throws RazorpayException {
         RazorpayClient razorpay = new RazorpayClient(key_id, key_secret);
-//        String paymentId = "pay_K30a3EG6YBslf0";
 
         JSONObject request = new JSONObject();
         request.put("amount", convertRupeeToPaise(refundRequestDto.getAmount()));

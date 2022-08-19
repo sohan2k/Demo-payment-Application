@@ -388,12 +388,12 @@
     let oid = document.getElementById("oid").value;
     console.log(oid);
     document.getElementById('submit-form').onclick = function (e) {
-        var reqObj = $('#msform').serializeArray();
-        console.log(reqObj);
-        var indxReqObj = {};
-        $.map(reqObj, function (n, i) {
-            indxReqObj[n['name']] = n['value'];
-        });
+        // var reqObj = $('#msform').serializeArray();
+        // console.log(reqObj);
+        // var indxReqObj = {};
+        // $.map(reqObj, function (n, i) {
+        //     indxReqObj[n['name']] = n['value'];
+        // });
 
         resp = doPost("/pay/pending?id=" + oid, false);
         console.log(resp);

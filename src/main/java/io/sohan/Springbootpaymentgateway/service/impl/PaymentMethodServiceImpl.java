@@ -48,37 +48,17 @@ public class PaymentMethodServiceImpl {
             if (!getByCard(paymentMethod.getCardId(), customers.getId())) {
                 paymentMethod.setCustomers(customers);
                 paymentMethodRepository.save(paymentMethod);
-                System.out.println("vpa1");
                 System.out.println(paymentMethod);
             }
         } else {
             if (!getByVpa(paymentMethod.getVpa(), customers.getId())) {
                 paymentMethod.setCustomers(customers);
                 paymentMethodRepository.save(paymentMethod);
-                System.out.println("card2");
                 System.out.println(paymentMethod);
             }
         }
 
     }
-
-    //    public List<Object> getListCard() throws RazorpayException {
-//        RazorpayClient razorpay = new RazorpayClient(key_id, key_secret);
-//
-//        JSONObject params = new JSONObject();
-//        params.put("expand[]", "card");
-//
-//        List<Payment> payment = razorpay.Payments.fetchAll(params);
-//        System.out.println(payment);
-//        List<Object> paymentList = new ArrayList<>();
-//        for (Payment p : payment) {
-//            assert false;
-//            paymentList.add(p.toString());
-//        }
-//        System.out.println(paymentList);
-//        return paymentList;
-//    }
-//
 
 
 }

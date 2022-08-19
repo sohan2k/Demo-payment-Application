@@ -85,25 +85,6 @@ public class OrderServicesImpl implements OrderServices {
         return optionalOrders.get();
     }
 
-//    @Override
-//    public void update(String id, OrderCheckDto orderCheckDto) throws RazorpayException {
-//        RazorpayClient razorpayClient = new RazorpayClient(key_id, key_secret);
-//        Orders orders = getOrder(id);
-//        Order order = razorpayClient.Orders.fetch(id);
-////        if(o)
-//        Orders orders1 = gson.fromJson(order.toString(), Orders.class);
-//        orders.setStatus(orders1.getStatus());
-//        orders.setAmount_due(orders1.getAmount_due());
-//        orders.setAmount_paid(orders1.getAmount_paid());
-//        orders.setAttempts(orders1.getAttempts());
-//        orders.setRazorpay_payment_id(orderCheckDto.getRazorpay_payment_id());
-//        orders.setRazorpay_signature(orderCheckDto.getRazorpay_signature());
-////        orders.setPayments(payments);
-//        System.out.println(orders);
-//        orders = orderRepository.save(orders);
-//        paymentServices.add(orderCheckDto, orders);
-//    }
-
     @Override
     public OrderResponseDto add(OrderRequestDto orderRequestDto) {
         try {
@@ -136,11 +117,6 @@ public class OrderServicesImpl implements OrderServices {
 
         Order order = razorpayClient.Orders.fetch(orderCheckDto.getRazorpay_order_id());
         Orders orders = save(order);
-//        Orders orders1 = gson.fromJson(order.toString(), Orders.class);
-//        orders.setStatus(orders1.getStatus());
-//        orders.setAmount_due(orders1.getAmount_due());
-//        orders.setAmount_paid(orders1.getAmount_paid());
-//        orders.setAttempts(orders1.getAttempts());
         orders.setRazorpay_payment_id(orderCheckDto.getRazorpay_payment_id());
         orders.setRazorpay_signature(orderCheckDto.getRazorpay_signature());
 //        Payment payment = razorpayClient.Payments.fetch(orderCheckDto.getRazorpay_payment_id());
